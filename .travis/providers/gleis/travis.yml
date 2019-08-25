@@ -1,0 +1,24 @@
+language: ruby
+
+install: true
+script: true
+
+before_deploy:
+  - .travis/providers/gleis/prepare
+  - cd tmp/dpl_test
+
+deploy:
+  - provider: gleis
+    edge:
+      source: brigriffin/dpl
+      branch: gleis-provider
+    on:
+      branch: master
+    app: dpl-test
+    username: dpl-test@travis-ci.org
+    password:
+      secure: "Y7Tmtz5pJMEMydW1jhYMrbJR6xpHsRwYlsq8egRYdSutWY0p/nLN2VIDtwJauY7LL3EmLIDmh71/qtuH4qvxv69sLktnRHtacWBMhNvJJl9bz8V8INa3YJZG2ytP65GHIunyqQrmUmVDgFrgc0u2uPd5eqj4NGfhbyFn5ul+ngiDi1azsPI4OTGOqt5bZjJRfhDcqa7h9vYyYiO1KA9gs0WPlJ5jEaUQ5vLNvHxneI2Co9yrmjc1+9f5Zau3BTzZ0ZQPqtUOAOMf6o4INry11OigRRNqwp9hxk/rlMbLVQ9hsmK2K65I0nWkOdk87ID4ITimTWMPft+5i0hzeGYr0+zGGV1oZ712Sba+EYID+GamZGN6KOQ7uuv3oCizk96D5N62Kx/6zazyZIQvVJfKYmxvLxUS1qHkdJgL7EfaFkdimICtkkPsUsKPRlMiq/SpKeag5LKFIB3edbHuXtNDIRKn5WuE2iliElX5I6BYYanf4DnYeBjwqubmM4hxkW/y6NaSjItydkSdctwtrOWydjuGfOGESV1MFGlsdVMjP2wAATVs+fkn2SFr0SxiHWPYo7MDKeVGH2n8NYHEhX9SEVSMjEP8FnlAH0lbBWhFGaPtE+ViilNKdhVOiby3as3nTopSCgp0VOy/ReVcjMICp0HFqC9Ut2hNRDq2nAbkLgA="
+
+after_deploy:
+  - cd ../..
+  - .travis/providers/gleis/test || TRAVIS_TEST_RESULT=$?
